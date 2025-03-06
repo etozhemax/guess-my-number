@@ -1,12 +1,15 @@
 const MIN_VALUE = 1;
 const MAX_VALUE = 20;
 
-let againButton;
-let checkButton;
-let inputValue;
-let guessedValue;
-let labelScore;
-let labelHighScore;
+let viewModel = {
+  againButton: null,
+  checkButton: null,
+  inputValue: null,
+  guessedValue: null,
+  labelScore: null,
+  labelHighScore: null,
+  body: null,
+};
 
 const gameState = {
   score: 20,
@@ -15,47 +18,55 @@ const gameState = {
 };
 
 function resetFrontendState() {
-  guessedValue.textContent = '?';
-  inputValue.value = '';
-  checkButton.style = '';
+  viewModel.guessedValue.textContent = '?';
+  viewModel.inputValue.value = '';
+  viewModel.checkButton.style = '';
+  viewModel.body.style = 'background-color: #222;';
 
-  labelScore.textContent = gameState.score;
-  labelHighScore.textContent = gameState.highscore;
+  viewModel.labelScore.textContent = gameState.score;
+  viewModel.labelHighScore.textContent = gameState.highscore;
 }
 
 function parseContext() {
-  againButton = document.querySelector('.js-again');
-  checkButton = document.querySelector('.js-check');
-  inputValue = document.querySelector('.js-guess');
-  guessedValue = document.querySelector('.js-number');
-  labelScore = document.querySelector('.js-score');
-  labelHighScore = document.querySelector('.js-highscore');
+  viewModel.againButton = document.querySelector('.js-again');
+  viewModel.checkButton = document.querySelector('.js-check');
+  viewModel.inputValue = document.querySelector('.js-guess');
+  viewModel.guessedValue = document.querySelector('.js-number');
+  viewModel.labelScore = document.querySelector('.js-score');
+  viewModel.labelHighScore = document.querySelector('.js-highscore');
+  viewModel.body = document.querySelector('body');
 }
 
 function bindEvents() {
-  againButton.addEventListener('click', () => {
+  viewModel.againButton.addEventListener('click', () => {
     gameState.score = 20;
     guessNumber();
 
     resetFrontendState();
   });
 
-  checkButton.addEventListener('click', () => {
-    guessedValue.textContent = inputValue.value;
+  viewModel.checkButton.addEventListener('click', () => {
+    viewModel.guessedValue.textContent = viewModel.inputValue.value;
     console.log(gameState);
 
-    if (+inputValue.value === gameState.guessedValue) {
+    if (+viewModel.inputValue.value === gameState.guessedValue) {
       if (gameState.score > gameState.highscore) {
         gameState.highscore = gameState.score;
       }
 
-      checkButton.style = 'display: none;';
+      viewModel.checkButton.style = 'display: none;';
+      viewModel.body.style = 'background-color: green;';
     } else {
       gameState.score--;
     }
 
-    labelScore.textContent = gameState.score;
-    labelHighScore.textContent = gameState.highscore;
+    viewModel.labelScore.textContent = gameState.score;
+    viewModel.labelHighScore.textContent = gameState.highscore;
+
+    if (gameState.score === 0) {
+      viewModel.checkButton.style = 'display: none;';
+      viewModel.body.style = 'background-color: red;';
+    }
   });
 }
 
