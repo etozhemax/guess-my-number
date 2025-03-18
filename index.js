@@ -52,9 +52,15 @@ const model = {
         viewModel.checkButton.style = 'display: none;';
         viewModel.body.style = 'background-color: green;';
 
-        viewModel.infoMessage.textContent = 'You won!';
-      } else {
+        viewModel.infoMessage.textContent = '✅ You won!';
+      } else if (+viewModel.inputValue.value >= model.gameState.guessedValue) {
         model.gameState.score--;
+
+        viewModel.infoMessage.textContent = '📈 Too high!';
+      } else if (+viewModel.inputValue.value <= model.gameState.guessedValue) {
+        model.gameState.score--;
+
+        viewModel.infoMessage.textContent = '📉 Too low!';
       }
 
       viewModel.labelScore.textContent = model.gameState.score;
@@ -63,7 +69,7 @@ const model = {
       if (model.gameState.score === 0) {
         viewModel.checkButton.style = 'display: none;';
         viewModel.body.style = 'background-color: red;';
-        viewModel.infoMessage.textContent = 'You lose!';
+        viewModel.infoMessage.textContent = '🛑 You lose!';
       }
     });
   },
